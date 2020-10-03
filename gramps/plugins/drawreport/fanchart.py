@@ -30,7 +30,7 @@
 # python modules
 #
 #------------------------------------------------------------------------
-from math import pi, cos, sin, log10, acos
+from math import pi, cos, sin, log10, acos, asin, degrees, radians
 
 def log2(val):
     """
@@ -97,10 +97,9 @@ def draw_wedge(doc, style, centerx, centery, radius, start_angle,
 
     path = []
 
-    degreestoradians = pi / 180.0
-    radiansdelta = degreestoradians / 2
-    sangle = start_angle * degreestoradians
-    eangle = end_angle * degreestoradians
+    radiansdelta = radians(0.5)
+    sangle = radians(start_angle)
+    eangle = radians(end_angle)
     while eangle < sangle:
         eangle = eangle + 2 * pi
     angle = sangle
@@ -246,12 +245,19 @@ class FanChart(Report):
             min_xy = min(_x_, _y_)
 
         elif self.circle == OVERHANG:
-            overhang_angle = 25.0
+            if self.doc.get_usable_height() < self.doc.get_usable_width() and \
+               self.doc.get_usable_height() > self.doc.get_usable_width() / 2:
+                # Determine overhang angle to fill the paper
+                radius = self.doc.get_usable_width() / 2
+                _overhang_height_ = self.doc.get_usable_height() - radius
+                overhang_angle = degrees(asin(_overhang_height_ / radius))
+            else:
+                overhang_angle = 25.0
             max_angle = 180 + 2 * overhang_angle
             start_angle = 180 - overhang_angle
             max_circular = 3
             _x_ = (self.doc.get_usable_width()/2.0)
-            _overhang_height_ = sin(overhang_angle * pi / 180) * _x_
+            _overhang_height_ = sin(radians(overhang_angle)) * _x_
             _y_ = self.doc.get_usable_height() - _overhang_height_
             min_xy = min(_x_, _y_)
 
