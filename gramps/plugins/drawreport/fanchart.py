@@ -162,7 +162,8 @@ class FanChart(Report):
         that come in the options class.
 
         maxgen       - Maximum number of generations to include.
-        circle       - Draw a full circle, half circle, or quarter circle.
+        circle       - Draw a full circle, half circle, half circle with
+                       overhang or quarter circle.
         background   - Background color is generation dependent or white.
         radial       - Print radial texts roundabout or as upright as possible.
         draw_empty   - draw background when there is no information
@@ -723,7 +724,7 @@ class FanChartOptions(MenuReportOptions):
         circle.add_item(OVERHANG, _('overhang'))
         circle.add_item(QUAR_CIRCLE, _('quarter circle'))
         circle.set_help(_("The form of the graph: full circle, half circle,"
-                          " or quarter circle."))
+                          " half circle with overhang or quarter circle."))
         menu.add_option(category_name, "circle", circle)
 
         background = EnumeratedListOption(_('Background color'), BACKGROUND_GEN)
